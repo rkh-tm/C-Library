@@ -13,9 +13,9 @@ typedef struct DynamicArray{
     DataType type;
 } DynamicArray;
 
-DynamicArray *initDynamicArray(DataType type);
-void pushDynamicArray(DynamicArray *ptr, void *val);
-void *getDynamicArray(DynamicArray *ptr, int len, int *arr, int idx);
-DynamicArray *freeDynamicArray(DynamicArray *ptr);
+DynamicArray *initDynamicArray(const DataType type);
+void pushDynamicArray(DynamicArray *ptr, const void *val);
+// void *getDynamicArray(const DynamicArray *ptr, int len, int *arr, int idx);
+DynamicArray *freeDynamicArray(const DynamicArray *ptr);
 
 #endif

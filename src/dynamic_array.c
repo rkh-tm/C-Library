@@ -29,33 +29,35 @@ Extras
     ((char *)((DynamicArray **)v->array)[0]->array)[0] to access multi-dimensional arrays
 */
 
-void errorDynamicArray(char *s){
-    fprintf(stderr, "ERROR: %s\n", s);
-}
-
-DynamicArray *initDynamicArray(DataType type){
-    DynamicArray *arr = malloc(sizeof(DynamicArray));
-    arr->size = 0;
-    arr->capacity = 1;
+DynamicArray *initDynamicArray(const DataType type){
+	DynamicArray *arr = malloc(sizeof(DynamicArray));
 
     switch(type){
-        case INT: arr->element_size = sizeof(int); break;
-        case LLONG: arr->element_size = sizeof(long long); break;
-        case CHAR: arr->element_size = sizeof(char); break;
-        case DYNAMIC_ARRAY: arr->element_size = sizeof(DynamicArray *); break;
+	case INT: arr->element_size = sizeof(int); break;
+	case LLONG: arr->element_size = sizeof(long long); break;
+	case CHAR: arr->element_size = sizeof(char); break;
+	case DYNAMIC_ARRAY: arr->element_size = sizeof(DynamicArray *); break;
+	default:
+		free(arr);
+		printf("Error: Invalid type\n");
+		return NULL;
     }
-    arr->type = type;
 
+	arr->size = 0;
+    arr->capacity = 1;
+    arr->type = type;
     arr->array = malloc(arr->element_size);
 
     return arr;
 }
 
-void pushDynamicArray(DynamicArray *ptr, void *val){
-    if(!ptr) errorDynamicArray("Missing array");
-    if(!val) errorDynamicArray("Missing value");
-
-    if(ptr->size==ptr->capacity){
+void pushDynamicArray(DynamicArray *ptr, const void *val){
+	if(!ptr || !val){
+		printf("Error: Invalid pointer\n");
+		return;
+	}
+	
+	if(ptr->size==ptr->capacity){
         ptr->capacity *= 2;
         ptr->array = realloc(ptr->array, ptr->capacity * ptr->element_size);
     }
@@ -67,31 +69,31 @@ void pushDynamicArray(DynamicArray *ptr, void *val){
     return;
 }
 
-void *getDynamicArray(DynamicArray *ptr, int len, int *arr, int idx){
-    // returns NULL if error
-    if((idx<len && ptr->type!=DYNAMIC_ARRAY) || (idx==len && ptr->type==DYNAMIC_ARRAY)){
-        printf("Error: Wrong dimension size\n");
-        return NULL;
-    }
+// void *getDynamicArray(DynamicArray *ptr, int len, int *arr, int idx){
+//     // returns NULL if error
+//     if((idx<len && ptr->type!=DYNAMIC_ARRAY) || (idx==len && ptr->type==DYNAMIC_ARRAY)){
+//         printf("Error: Wrong dimension size\n");
+//         return NULL;
+//     }
 
-    if(arr[idx-1]>=ptr->size || arr[idx-1]<0){
-        printf("Error: Out of bounds\n");
-        return NULL;
-    }
+//     if(arr[idx-1]>=ptr->size || arr[idx-1]<0){
+//         printf("Error: Out of bounds\n");
+//         return NULL;
+//     }
 
-    void *res;
-	if(ptr->type==DYNAMIC_ARRAY){
-        DynamicArray *tmp = ((DynamicArray **)ptr->array)[arr[idx-1]];
-        res = getDynamicArray(tmp, len, arr, idx+1);
-    }
-    else{
-        res = (char *)ptr->array + arr[idx-1] * ptr->element_size;
-    }
+//     void *res;
+// 	if(ptr->type==DYNAMIC_ARRAY){
+//         DynamicArray *tmp = ((DynamicArray **)ptr->array)[arr[idx-1]];
+//         res = getDynamicArray(tmp, len, arr, idx+1);
+//     }
+//     else{
+//         res = (char *)ptr->array + arr[idx-1] * ptr->element_size;
+//     }
 
-	return res;
-}
+// 	return res;
+// }
 
-DynamicArray *freeDynamicArray(DynamicArray *ptr){
+DynamicArray *freeDynamicArray(const DynamicArray *ptr){
     if(!ptr) return NULL;
 
     if(ptr->type==DYNAMIC_ARRAY){
