@@ -33,20 +33,20 @@ void errorDynamicArray(char *s){
     fprintf(stderr, "ERROR: %s\n", s);
 }
 
-DynamicArray initDynamicArray(DataType type){
-    DynamicArray arr;
-    arr.size = 0;
-    arr.capacity = 1;
+DynamicArray *initDynamicArray(DataType type){
+    DynamicArray *arr = malloc(sizeof(initDynamicArray));
+    arr->size = 0;
+    arr->capacity = 1;
 
     switch(type){
-        case INT: arr.element_size = sizeof(int); break;
-        case LLONG: arr.element_size = sizeof(long long); break;
-        case CHAR: arr.element_size = sizeof(char); break;
-        case DYNAMIC_ARRAY: arr.element_size = sizeof(DynamicArray *); break;
+        case INT: arr->element_size = sizeof(int); break;
+        case LLONG: arr->element_size = sizeof(long long); break;
+        case CHAR: arr->element_size = sizeof(char); break;
+        case DYNAMIC_ARRAY: arr->element_size = sizeof(DynamicArray *); break;
     }
-    arr.type = type;
+    arr->type = type;
 
-    arr.array = malloc(arr.element_size);
+    arr->array = malloc(arr->element_size);
 
     return arr;
 }
