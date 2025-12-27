@@ -34,7 +34,7 @@ void errorDynamicArray(char *s){
 }
 
 DynamicArray *initDynamicArray(DataType type){
-    DynamicArray *arr = malloc(sizeof(initDynamicArray));
+    DynamicArray *arr = malloc(sizeof(DynamicArray));
     arr->size = 0;
     arr->capacity = 1;
 
