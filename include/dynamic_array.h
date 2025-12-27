@@ -13,7 +13,7 @@ typedef struct DynamicArray{
     DataType type;
 } DynamicArray;
 
-DynamicArray initDynamicArray(DataType type);
+DynamicArray *initDynamicArray(DataType type);
 void pushDynamicArray(DynamicArray *ptr, void *val);
 void *getDynamicArray(DynamicArray *ptr, int len, int *arr, int idx);
 DynamicArray *freeDynamicArray(DynamicArray *ptr);
