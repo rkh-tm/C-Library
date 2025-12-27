@@ -93,7 +93,7 @@ void pushDynamicArray(DynamicArray *ptr, const void *val){
 // 	return res;
 // }
 
-DynamicArray *freeDynamicArray(const DynamicArray *ptr){
+DynamicArray *freeDynamicArray(DynamicArray *ptr){
     if(!ptr) return NULL;
 
     if(ptr->type==DYNAMIC_ARRAY){
